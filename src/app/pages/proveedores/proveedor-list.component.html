@@ -1,0 +1,76 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3 app-page-head"><h3 class="mb-0">Proveedores</h3><a class="btn btn-success" routerLink="/proveedores">Nuevo proveedor</a></div>
+
+  <div *ngIf="mensajeError" class="alert alert-danger">{{ mensajeError }}</div>
+  <div *ngIf="loading" class="text-center py-4">Cargando proveedores...</div>
+
+  <div *ngIf="!loading" class="card">
+    <div class="card-body border-bottom">
+      <div class="row g-2 align-items-end">
+        <div class="col-md-5">
+          <label for="filtroTexto" class="form-label mb-1">Buscar</label>
+          <input id="filtroTexto" type="search" inputmode="search" autocomplete="off" class="form-control" placeholder="Código, nombre, DUI, NIT, teléfono..." [(ngModel)]="filtroTexto" (ngModelChange)="onFiltroTextoCambio()">
+        </div>
+        <div class="col-md-3">
+          <label for="filtroEstado" class="form-label mb-1">Estado</label>
+          <select id="filtroEstado" class="form-select" [(ngModel)]="filtroEstado" (ngModelChange)="onFiltroEstadoCambio()">
+            <option value="">Todos</option>
+            <option [ngValue]="1">Activos</option>
+            <option [ngValue]="0">Inactivos</option>
+          </select>
+        </div>
+        <div class="col-md-4 d-flex justify-content-md-end">
+          <span class="text-muted small">Mostrando {{ startItem }} a {{ endItem }} de {{ totalItems }} registros</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Movil: una tarjeta por registro, sin desplazamiento horizontal -->
+    <div class="d-md-none">
+      <div class="app-mobile-card" *ngFor="let prov of paginatedProveedores">
+        <div class="app-mobile-card__head">
+          <span class="app-mobile-card__code">{{ prov.codproveedor }}</span>
+          <span class="badge" [class.bg-success]="prov.estado === 1" [class.bg-secondary]="prov.estado !== 1">{{ prov.estado === 1 ? 'Activo' : 'Inactivo' }}</span>
+        </div>
+        <div class="app-mobile-card__title">{{ prov.nomproveedor }} {{ prov.apellidoproveedor || '' }}</div>
+        <dl class="app-mobile-card__data">
+          <div><dt>DUI</dt><dd>{{ prov.duiproveedor || '-' }}</dd></div>
+          <div><dt>NIT</dt><dd>{{ prov.nitproveedor || '-' }}</dd></div>
+          <div><dt>Teléfono</dt><dd>{{ prov.telefonoproveedor || '-' }}</dd></div>
+        </dl>
+        <div class="app-mobile-card__actions">
+          <button class="btn btn-sm btn-outline-primary" (click)="editar(prov)">Editar</button>
+          <button class="btn btn-sm btn-outline-danger" (click)="eliminar(prov)">Eliminar</button>
+        </div>
+      </div>
+      <div *ngIf="paginatedProveedores.length === 0" class="text-center text-muted py-4">No hay proveedores que coincidan con la búsqueda.</div>
+    </div>
+
+    <!-- Escritorio y tablet: tabla completa -->
+    <div class="table-responsive d-none d-md-block">
+      <table class="table table-hover mb-0">
+        <thead><tr><th>Código</th><th>Nombre</th><th>Apellido</th><th>DUI</th><th>NIT</th><th>Teléfono</th><th>Estado</th><th></th></tr></thead>
+        <tbody>
+          <tr *ngFor="let prov of paginatedProveedores">
+            <td>{{ prov.codproveedor }}</td>
+            <td>{{ prov.nomproveedor }}</td>
+            <td>{{ prov.apellidoproveedor || '-' }}</td>
+            <td>{{ prov.duiproveedor || '-' }}</td>
+            <td>{{ prov.nitproveedor || '-' }}</td>
+            <td>{{ prov.telefonoproveedor || '-' }}</td>
+            <td><span class="badge" [class.bg-success]="prov.estado === 1" [class.bg-secondary]="prov.estado !== 1">{{ prov.estado === 1 ? 'Activo' : 'Inactivo' }}</span></td>
+            <td class="text-nowrap"><button class="btn btn-sm btn-outline-primary me-2" (click)="editar(prov)">Editar</button><button class="btn btn-sm btn-outline-danger" (click)="eliminar(prov)">Eliminar</button></td>
+          </tr>
+          <tr *ngIf="paginatedProveedores.length === 0"><td colspan="8" class="text-center text-muted py-4">No hay proveedores que coincidan con la búsqueda.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-body border-top" *ngIf="totalItems > 0">
+      <div class="row justify-content-between align-items-center g-2">
+        <div class="col-sm-12 col-md-5">
+          <ngb-pagination [collectionSize]="totalItems" [(page)]="currentPage" [pageSize]="pageSize" [maxSize]="3" [rotate]="true" [boundaryLinks]="false"></ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

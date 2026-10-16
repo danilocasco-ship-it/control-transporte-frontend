@@ -1,0 +1,43 @@
+<!-- token-expirado.component.html -->
+<div
+  class="auth-page-wrapper py-5 d-flex justify-content-center align-items-center min-vh-100 bg-light"
+>
+  <div class="auth-page-content overflow-hidden p-0">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-xl-7 col-lg-8">
+          <div class="text-center">
+            <img
+              src="assets/images/server-error.png"
+              alt="Sesión expirada"
+              class="img-fluid mb-4"
+              style="max-width: 400px"
+            />
+
+            <div class="mt-3">
+              <h3 class="text-uppercase text-warning mb-3">
+                <i class="mdi mdi-clock-alert-outline me-2"></i>
+                Sesión Expirada
+              </h3>
+
+              <p class="text-muted fs-16 mb-4">Tu sesión ha caducado.</p>
+
+              <p class="text-muted fs-15">
+                Por favor, vuelve a iniciar sesión en el portal para continuar.
+              </p>
+
+              <button
+                type="button"
+                class="btn btn-warning mt-2 text-white"
+                (click)="irAlPortal()"
+              >
+                <i class="mdi mdi-login me-1"></i>
+                Ir al portal
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

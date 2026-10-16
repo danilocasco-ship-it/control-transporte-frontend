@@ -1,0 +1,120 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ title }}</h5>
+  <button
+    type="button"
+    class="btn-close"
+    (click)="close()"
+    aria-label="Close"
+  ></button>
+</div>
+
+<div class="modal-body">
+  <!-- Mostrar formulario solo si NO es una confirmación -->
+  <form *ngIf="!showConfirmButtons" #form="ngForm" (submit)="save()">
+    <div class="row g-3">
+      <div
+        *ngFor="let field of fields"
+        [class.col-xxl-6]="multiColumnLayout"
+        [class.col-xxl-12]="!multiColumnLayout"
+        class="col-md-12"
+      >
+        <label [for]="field.key" class="form-label">{{ field.label }}</label>
+
+        <!-- <ng-container [ngSwitch]="field.type"> -->
+        <ng-container [ngSwitch]="getInputType(field.key)">
+          <!-- Checkbox para booleanos -->
+          <div *ngSwitchCase="'checkbox'" class="form-check form-switch">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              role="switch"
+              [id]="field.key"
+              [(ngModel)]="data[field.key]"
+              [name]="field.key"
+              [disabled]="field.readonly"
+            />
+          </div>
+
+          <!-- Select para opciones desplegables -->
+          <select
+            *ngSwitchCase="'select'"
+            class="form-select"
+            [(ngModel)]="data[field.key]"
+            [name]="field.key"
+            [disabled]="field.readonly"
+            [required]="isRequiredField(field.key)"
+            (ngModelChange)="onFieldChange(field.key, $event)"
+          >
+            <option [ngValue]="" disabled selected>SELECCIONE</option>
+            <option
+              *ngFor="let option of field.options"
+              [ngValue]="option.value"
+            >
+              {{ option.label }}
+            </option>
+          </select>
+
+          <!-- Input de fecha -->
+          <input
+            *ngSwitchCase="'date'"
+            type="date"
+            class="form-control"
+            [id]="field.key"
+            [ngModel]="data[field.key] | date : 'yyyy-MM-dd'"
+            [name]="field.key"
+            (ngModelChange)="onDateChange(field.key, $event)"
+            [readonly]="field.readonly"
+          />
+
+          <!-- Campo por defecto -->
+          <input
+            *ngSwitchDefault
+            [type]="field.type"
+            class="form-control"
+            [id]="field.key"
+            [(ngModel)]="data[field.key]"
+            [name]="field.key"
+            [required]="isRequiredField(field.key)"
+            [readonly]="field.readonly"
+            [ngClass]="{ 'readonly-field': field.readonly }"
+          />
+        </ng-container>
+        <!-- Mensajes de error -->
+        <div *ngIf="showError(field)" class="invalid-feedback d-block">
+          <span *ngIf="form.controls[field.key]?.errors?.['required']">
+            Campo obligatorio
+          </span>
+          <span *ngIf="field.type === 'select' && !data[field.key]">
+            Debe seleccionar una opción válida
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="hstack gap-2 justify-content-end mt-3">
+      <button type="button" class="btn btn-light" (click)="close()">
+        Cerrar
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="form.invalid || isSaving"
+      >
+        {{ isSaving ? "Guardando..." : "Guardar" }}
+      </button>
+    </div>
+  </form>
+
+  <!-- Mostrar mensaje de confirmación cuando showConfirmButtons sea true -->
+  <div *ngIf="showConfirmButtons">
+    <p>{{ actionConfig[actionType].message }}</p>
+    <div class="hstack gap-2 justify-content-end mt-3">
+      <button
+        class="btn {{ actionConfig[actionType].btnClass }}"
+        (click)="onSave.emit()"
+      >
+        {{ actionLabel || actionConfig[actionType].btnText }}
+      </button>
+      <button class="btn btn-secondary" (click)="close()">Cancelar</button>
+    </div>
+  </div>
+</div>

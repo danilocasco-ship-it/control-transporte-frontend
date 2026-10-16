@@ -1,0 +1,135 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3 app-page-head"><h3 class="mb-0">Equipos</h3><a class="btn btn-success" routerLink="/equipos">Nuevo equipo</a></div>
+
+  <!-- En movil van 2 tarjetas por fila (col-6) para no gastar 4 pantallas de scroll -->
+  <div class="row g-3 mb-4" *ngIf="!cargando">
+    <div class="col-6 col-xl-3">
+      <div class="card card-animate h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="avatar-sm flex-shrink-0 me-3">
+            <span class="avatar-title rounded bg-primary-subtle text-primary fw-semibold fs-18"><i class="bx bx-wrench"></i></span>
+          </div>
+          <div class="flex-grow-1 overflow-hidden">
+            <p class="text-uppercase fw-medium text-muted text-truncate mb-1">Total equipos</p>
+            <h4 class="fs-22 fw-semibold ff-secondary mb-0">{{ totalEquipos }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-xl-3">
+      <div class="card card-animate h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="avatar-sm flex-shrink-0 me-3">
+            <span class="avatar-title rounded bg-success-subtle text-success fw-semibold fs-18"><i class="bx bx-check-circle"></i></span>
+          </div>
+          <div class="flex-grow-1 overflow-hidden">
+            <p class="text-uppercase fw-medium text-muted text-truncate mb-1">Equipos activos</p>
+            <h4 class="fs-22 fw-semibold ff-secondary mb-0">{{ equiposActivos }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-xl-3">
+      <div class="card card-animate h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="avatar-sm flex-shrink-0 me-3">
+            <span class="avatar-title rounded bg-warning-subtle text-warning fw-semibold fs-18"><i class="bx bx-transfer-alt"></i></span>
+          </div>
+          <div class="flex-grow-1 overflow-hidden">
+            <p class="text-uppercase fw-medium text-muted text-truncate mb-1">Equipos en préstamo</p>
+            <h4 class="fs-22 fw-semibold ff-secondary mb-0">{{ equiposEnPrestamo }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-xl-3">
+      <div class="card card-animate h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="avatar-sm flex-shrink-0 me-3">
+            <span class="avatar-title rounded bg-info-subtle text-info fw-semibold fs-18"><i class="bx bxs-calendar-check"></i></span>
+          </div>
+          <div class="flex-grow-1 overflow-hidden">
+            <p class="text-uppercase fw-medium text-muted text-truncate mb-1">Préstamos registrados</p>
+            <h4 class="fs-22 fw-semibold ff-secondary mb-0">{{ totalPrestamos }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="mensajeError" class="alert alert-danger">{{ mensajeError }}</div>
+  <div *ngIf="cargando" class="text-center py-4">Cargando equipos...</div>
+
+  <div *ngIf="!cargando" class="card">
+    <div class="card-body border-bottom">
+      <div class="row g-2 align-items-end">
+        <div class="col-md-5">
+          <label for="filtroTexto" class="form-label mb-1">Buscar</label>
+          <input id="filtroTexto" type="search" inputmode="search" autocomplete="off" class="form-control" placeholder="Código, equipo, proveedor, modelo, placa, capacidad..." [(ngModel)]="filtroTexto" (ngModelChange)="onFiltroTextoCambio()">
+        </div>
+        <div class="col-md-3">
+          <label for="filtroEstado" class="form-label mb-1">Estado</label>
+          <select id="filtroEstado" class="form-select" [(ngModel)]="filtroEstado" (ngModelChange)="onFiltroEstadoCambio()">
+            <option value="">Todos</option>
+            <option [ngValue]="1">Activos</option>
+            <option [ngValue]="0">Inactivos</option>
+          </select>
+        </div>
+        <div class="col-md-4 d-flex justify-content-md-end">
+          <span class="text-muted small">Mostrando {{ startItem }} a {{ endItem }} de {{ totalItems }} registros</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Movil: una tarjeta por registro, sin desplazamiento horizontal -->
+    <div class="d-md-none">
+      <div class="app-mobile-card" *ngFor="let equipo of paginatedEquipos">
+        <div class="app-mobile-card__head">
+          <span class="app-mobile-card__code">{{ equipo.codequipo }}</span>
+          <span class="badge" [class.bg-success]="equipo.estado === 1" [class.bg-secondary]="equipo.estado !== 1">{{ equipo.estado === 1 ? 'Activo' : 'Inactivo' }}</span>
+        </div>
+        <div class="app-mobile-card__title">{{ equipo.nomequipo }}</div>
+        <dl class="app-mobile-card__data">
+          <div><dt>Proveedor</dt><dd>{{ equipo.nomproveedor || '-' }}</dd></div>
+          <div><dt>Modelo</dt><dd>{{ equipo.modelo || '-' }}</dd></div>
+          <div><dt>Año</dt><dd>{{ equipo.anio || '-' }}</dd></div>
+          <div><dt>Placa</dt><dd>{{ equipo.placa || '-' }}</dd></div>
+          <div><dt>Capacidad</dt><dd>{{ equipo.capacidad || '-' }}</dd></div>
+        </dl>
+        <div class="app-mobile-card__actions">
+          <button class="btn btn-sm btn-outline-primary" (click)="editar(equipo)">Editar</button>
+          <button class="btn btn-sm btn-outline-danger" (click)="eliminar(equipo)">Desactivar</button>
+        </div>
+      </div>
+      <div *ngIf="paginatedEquipos.length === 0" class="text-center text-muted py-4">No hay equipos que coincidan con la búsqueda.</div>
+    </div>
+
+    <!-- Escritorio y tablet: tabla completa -->
+    <div class="table-responsive d-none d-md-block">
+      <table class="table table-hover mb-0">
+        <thead><tr><th>Código</th><th>Equipo</th><th>Proveedor</th><th>Modelo</th><th>Año</th><th>Placa</th><th>Capacidad</th><th>Estado</th><th></th></tr></thead>
+        <tbody>
+          <tr *ngFor="let equipo of paginatedEquipos">
+            <td>{{ equipo.codequipo }}</td>
+            <td>{{ equipo.nomequipo }}</td>
+            <td>{{ equipo.nomproveedor || '-' }}</td>
+            <td>{{ equipo.modelo || '-' }}</td>
+            <td>{{ equipo.anio || '-' }}</td>
+            <td>{{ equipo.placa || '-' }}</td>
+            <td>{{ equipo.capacidad || '-' }}</td>
+            <td><span class="badge" [class.bg-success]="equipo.estado === 1" [class.bg-secondary]="equipo.estado !== 1">{{ equipo.estado === 1 ? 'Activo' : 'Inactivo' }}</span></td>
+            <td class="text-nowrap"><button class="btn btn-sm btn-outline-primary me-2" (click)="editar(equipo)">Editar</button><button class="btn btn-sm btn-outline-danger" (click)="eliminar(equipo)">Desactivar</button></td>
+          </tr>
+          <tr *ngIf="paginatedEquipos.length === 0"><td colspan="9" class="text-center text-muted py-4">No hay equipos que coincidan con la búsqueda.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-body border-top" *ngIf="totalItems > 0">
+      <div class="row justify-content-between align-items-center g-2">
+        <div class="col-sm-12 col-md-5">
+          <ngb-pagination [collectionSize]="totalItems" [(page)]="currentPage" [pageSize]="pageSize" [maxSize]="3" [rotate]="true" [boundaryLinks]="false"></ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

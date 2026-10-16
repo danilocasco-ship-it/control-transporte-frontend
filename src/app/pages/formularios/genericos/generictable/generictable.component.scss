@@ -1,0 +1,64 @@
+th.sorted {
+  background-color: #f5f5f5 !important;
+  color: #007bff !important;
+  font-weight: bold !important;
+  border-bottom: 2px solid #007bff !important;
+}
+
+.action-menu-container {
+  position: relative;
+}
+
+.btn-icon {
+  padding: 0.25rem;
+  line-height: 1;
+  border: none;
+  background: transparent;
+}
+
+.btn-icon:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.mdi {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+:host ::ng-deep .popover {
+  min-width: 120px;
+  padding: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+:host ::ng-deep .popover-body {
+  padding: 0;
+}
+
+.action-menu-items {
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem 0;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.menu-item i {
+  font-size: 1rem;
+  width: 1rem;
+}

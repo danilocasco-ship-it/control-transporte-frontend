@@ -1,0 +1,48 @@
+<div class="container py-4" style="max-width: 760px;">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="card-title mb-4">{{ esEdicion ? 'Editar equipo' : 'Registro de equipo' }}</h3>
+      <div *ngIf="mensaje" class="alert"
+        [class.alert-success]="!mensaje.includes('No fue') && !mensaje.includes('Completa')"
+        [class.alert-danger]="mensaje.includes('No fue') || mensaje.includes('Completa')">{{ mensaje }}</div>
+      <form [formGroup]="equipoForm" (ngSubmit)="guardar()" class="row g-3">
+        <div class="col-md-8"><label class="form-label">Nombre del equipo *</label><input class="form-control"
+            formControlName="nomequipo" placeholder="Ej. Excavadora Oruga"></div>
+        <div class="col-md-4"><label class="form-label">Año</label><input type="number" class="form-control"
+            formControlName="anio"></div>
+        <div class="col-md-6"><label class="form-label">Tipo de maquinaria</label><select class="form-select"
+            formControlName="codtipomaquinaria" [disabled]="cargandoCatalogos">
+            <option [ngValue]="null">Seleccione un tipo</option>
+            <option *ngFor="let tipo of tiposMaquinaria" [ngValue]="tipo.codtipomaquinaria">{{ tipo.nomtipomaquinaria }}
+            </option>
+          </select></div>
+        <div class="col-md-6"><label class="form-label">Marca</label><select class="form-select"
+            formControlName="codmarca" [disabled]="cargandoCatalogos">
+            <option [ngValue]="null">Seleccione una marca</option>
+            <option *ngFor="let marca of marcas" [ngValue]="marca.codmarca">{{ marca.nommarca }}</option>
+          </select></div>
+        <div class="col-md-12"><label class="form-label">Proveedor del equipo</label><select class="form-select"
+            formControlName="codproveedor" [disabled]="cargandoCatalogos">
+            <option [ngValue]="null">Seleccione un proveedor</option>
+            <option *ngFor="let proveedor of proveedores" [ngValue]="proveedor.codproveedor">
+              {{ proveedor.codproveedor }} - {{ proveedor.nomproveedor }} {{ proveedor.apellidoproveedor }}
+            </option>
+          </select></div>
+        <div class="col-md-6"><label class="form-label">Modelo</label><input class="form-control"
+            formControlName="modelo" maxlength="50"></div>
+        <div class="col-md-6"><label class="form-label">Placa o número interno</label><input class="form-control"
+            formControlName="placa" maxlength="15"></div>
+        <div class="col-md-6"><label class="form-label">Capacidad</label><input class="form-control"
+            formControlName="capacidad" placeholder="Ej. 10 m³ o 50 ton" maxlength="50"></div>
+        <div class="col-md-6"><label class="form-label">Estado</label><select class="form-select"
+            formControlName="estado">
+            <option [ngValue]="1">Activo</option>
+            <option [ngValue]="0">Inactivo</option>
+          </select></div>
+        <div class="col-12 d-flex flex-column flex-sm-row justify-content-end gap-2"><button type="button" class="btn btn-light"
+            routerLink="/equipos-lista">Cancelar</button><button type="submit" class="btn btn-primary">{{ esEdicion ?
+            'Actualizar' : 'Guardar' }}</button></div>
+      </form>
+    </div>
+  </div>
+</div>

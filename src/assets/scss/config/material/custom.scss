@@ -1,0 +1,234 @@
+/*
+ Template Name: Velzon - Admin & Dashboard Template
+ Author: Themesbrand
+ Website: https://themesbrand.com/
+ Contact: support@themesbrand.com
+ File: Custom Css File
+*/
+
+// =============================================================================
+// CAPA MOVIL - Control Transporte
+// -----------------------------------------------------------------------------
+// Este archivo se importa al FINAL de app.scss, por lo que sus reglas ganan
+// sobre el resto del tema a igualdad de especificidad.
+// Todo lo que va dentro de @media (max-width: 767.98px) usa el mismo corte que
+// Velzon emplea para su sidebar off-canvas: la vista de escritorio NO cambia.
+// =============================================================================
+
+// Altura total de la barra de navegacion inferior, franja de gestos incluida.
+// Se define una sola vez para que el contenido, el footer y la propia barra
+// siempre coincidan.
+:root {
+  --app-bottom-nav-h: calc(56px + env(safe-area-inset-bottom, 0px));
+}
+
+// -----------------------------------------------------------------------------
+// A. Tarjeta de registro para movil (sustituye a las tablas anchas)
+// Se renderiza con la utilidad d-md-none, asi que no necesita media query.
+// -----------------------------------------------------------------------------
+.app-mobile-card {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--vz-border-color, rgba(0, 0, 0, 0.1));
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.app-mobile-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.app-mobile-card__code {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--vz-secondary-color, #878a99);
+  overflow-wrap: anywhere;
+}
+
+// Titulo principal de la tarjeta. overflow-wrap evita que un nombre, una
+// direccion o un correo largo desborden horizontalmente en pantallas de 320px.
+.app-mobile-card__title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+  overflow-wrap: anywhere;
+}
+
+.app-mobile-card__data {
+  margin: 0 0 0.75rem;
+
+  > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.15rem 0;
+  }
+
+  dt {
+    flex: 0 0 auto;
+    font-weight: 500;
+    color: var(--vz-secondary-color, #878a99);
+  }
+
+  dd {
+    flex: 1 1 auto;
+    margin: 0;
+    text-align: right;
+    overflow-wrap: anywhere;
+  }
+}
+
+.app-mobile-card__actions {
+  display: flex;
+  gap: 0.5rem;
+
+  > .btn {
+    flex: 1 1 0;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// B. Vista previa imprimible dentro del modal
+// En un telefono la tabla del reporte no cabe. Se permite desplazamiento
+// horizontal contenido en lugar de desbordar el modal completo.
+// -----------------------------------------------------------------------------
+.app-reporte {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+// -----------------------------------------------------------------------------
+// C. Ajustes exclusivos de movil
+// -----------------------------------------------------------------------------
+@media (max-width: 767.98px) {
+
+  // --- C.1 Anti-zoom de iOS ------------------------------------------------
+  // $font-size-base vale 0.8125rem (13px) y los campos lo heredan. iOS Safari
+  // hace zoom automatico al enfocar un campo con font-size < 16px y NO lo
+  // revierte: la pantalla queda descuadrada tras escribir. 16px lo evita.
+  input,
+  select,
+  textarea,
+  .form-control,
+  .form-select {
+    font-size: 16px;
+  }
+
+  // --- C.2 Areas tactiles --------------------------------------------------
+  // Minimo recomendado 44x44 px. .btn-sm mide ~27px de alto y es el que usan
+  // los botones Editar / Eliminar / Desactivar de las tablas.
+  .btn {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+  }
+
+  .form-control,
+  .form-select {
+    min-height: 44px;
+  }
+
+  // --- C.3 Cabecera de pantalla -------------------------------------------
+  // Titulo largo + boton de accion. En movil el boton baja a su propia linea
+  // a ancho completo y deja de apretar el titulo.
+  .app-page-head {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+
+    > .btn {
+      flex: 1 1 100%;
+    }
+  }
+
+  // --- C.4 Paginacion ------------------------------------------------------
+  // Con maxSize=5 y boundaryLinks se dibujan hasta 9 elementos, que desbordan
+  // en 360px. Ademas de reducir el numero de paginas en las plantillas, aqui se
+  // permite el salto de linea y se agrandan las areas tactiles.
+  ngb-pagination {
+    display: block;
+
+    .pagination {
+      flex-wrap: wrap;
+      justify-content: center;
+      row-gap: 0.35rem;
+      margin-bottom: 0;
+    }
+
+    .page-link {
+      min-width: 42px;
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  // --- C.5 Barra de navegacion inferior ------------------------------------
+  // .footer es position:absolute; bottom:0. Hay que subirlo por encima de la
+  // barra, compactarlo (en movil solo contiene la linea de copyright) y
+  // reservar ese espacio al final del contenido para que nada quede tapado.
+  .footer {
+    bottom: var(--app-bottom-nav-h);
+    height: auto;
+    min-height: 0;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .page-content {
+    // 34px del footer compacto + la barra inferior.
+    padding-bottom: calc(var(--app-bottom-nav-h) + 34px);
+    // viewport-fit=cover deja el contenido bajo el notch en horizontal.
+    padding-left: calc(env(safe-area-inset-left, 0px) + 12px);
+    padding-right: calc(env(safe-area-inset-right, 0px) + 12px);
+  }
+
+  // --- C.6 Tarjetas de estadistica -----------------------------------------
+  // En movil van 2 por fila (col-6) en lugar de 4 apiladas. El avatar se oculta
+  // para ceder todo el ancho al texto y la etiqueta puede ocupar 2 lineas en vez
+  // de cortarse con puntos suspensivos. Solo afecta a .card-animate, que en la
+  // aplicacion real unicamente usa la pantalla de equipos.
+  .card-animate {
+    .avatar-sm {
+      display: none;
+    }
+
+    .text-truncate {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      font-size: 0.6875rem;
+      line-height: 1.25;
+    }
+  }
+
+  // --- C.7 Modales ---------------------------------------------------------
+  // Que el modal no toque los bordes y que el pie reparta los botones a lo
+  // ancho en lugar de amontonarlos a la derecha.
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+
+  .modal-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    > .btn {
+      flex: 1 1 auto;
+      margin: 0;
+    }
+  }
+}

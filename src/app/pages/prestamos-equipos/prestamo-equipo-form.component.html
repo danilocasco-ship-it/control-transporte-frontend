@@ -1,0 +1,163 @@
+<div class="container py-4" style="max-width: 900px">
+  <div class="card shadow-sm">
+    <div class="card-body p-3 p-sm-4">
+      <h3 class="card-title mb-4">
+        {{ esEdicion ? "Editar préstamo de equipo" : "Préstamo de equipo" }}
+      </h3>
+      <div
+        *ngIf="mensaje"
+        class="alert"
+        [class.alert-success]="mensaje.includes('exitosamente')"
+        [class.alert-danger]="!mensaje.includes('exitosamente')"
+      >
+        {{ mensaje }}
+      </div>
+      <form [formGroup]="prestamoForm" (ngSubmit)="guardar()" class="row g-3">
+        <div class="col-12 col-md-5">
+          <label class="form-label" for="codsucursal">Sucursal *</label>
+          <select id="codsucursal" class="form-select" formControlName="codsucursal">
+            <option [ngValue]="null">Seleccione una sucursal</option>
+            <option
+              *ngFor="let sucursal of sucursales"
+              [ngValue]="sucursal.codsucursal"
+            >
+              {{ sucursal.nomsucursal }}
+            </option>
+          </select>
+        </div>
+        <div class="col-12 col-md-7">
+          <label class="form-label" for="codcontratista">Contratista *</label>
+          <select id="codcontratista" class="form-select" formControlName="codcontratista">
+            <option [ngValue]="null">Seleccione un contratista</option>
+            <option
+              *ngFor="let contratista of contratistas"
+              [ngValue]="contratista.codempleado"
+            >
+              {{ contratista.codempleado }} - {{ contratista.nomempleado }}
+            </option>
+          </select>
+        </div>
+        <div class="col-12">
+          <label class="form-label" for="codequipo">Equipo *</label>
+          <select
+            id="codequipo"
+            class="form-select"
+            formControlName="codequipo"
+            [disabled]="cargandoEquipos"
+          >
+            <option [ngValue]="null">Seleccione un equipo</option>
+            <option *ngFor="let equipo of equipos" [ngValue]="equipo.codequipo">
+              {{ equipo.codequipo }} - {{ equipo.nomequipo
+              }}{{ equipo.modelo ? " / " + equipo.modelo : "" }}
+            </option>
+          </select>
+        </div>
+        <div class="col-12">
+          <label class="form-label" for="observaciones">Descripción / observaciones</label>
+          <textarea
+            id="observaciones"
+            class="form-control"
+            rows="3"
+            formControlName="observaciones"
+            maxlength="500"
+            placeholder="Detalle del préstamo"
+          ></textarea>
+        </div>
+
+        <!--
+          Fecha y estado del prestamo. Antes existian DOS juegos de controles
+          enlazados al mismo formControlName (uno suelto arriba del formulario y
+          otro aqui dentro). Se dejo solo el agrupado: menos scroll en movil y
+          una sola fuente de verdad visible.
+        -->
+        <div class="col-12 col-md-6">
+          <fieldset class="border rounded p-3 h-100">
+            <legend class="float-none w-auto px-2 fs-6">Préstamo</legend>
+            <div>
+              <label class="form-label" for="fechaprestamo">Fecha</label>
+              <input
+                id="fechaprestamo"
+                type="date"
+                class="form-control"
+                formControlName="fechaprestamo"
+              />
+            </div>
+            <div class="mt-3">
+              <label class="form-label" for="estadoprestamo">Estado préstamo</label>
+              <select id="estadoprestamo" class="form-select" formControlName="estadoprestamo">
+                <option value="">Seleccione un estado</option>
+                <option
+                  *ngFor="let estado of estados"
+                  [value]="estado.nomestado"
+                >
+                  {{ estado.nomestado }}
+                </option>
+              </select>
+            </div>
+          </fieldset>
+        </div>
+        <div class="col-12 col-md-6">
+          <fieldset class="border rounded p-3 h-100">
+            <legend class="float-none w-auto px-2 fs-6">Devolución</legend>
+            <div>
+              <label class="form-label" for="fechadevolucion">Fecha</label>
+              <input
+                id="fechadevolucion"
+                type="date"
+                class="form-control"
+                formControlName="fechadevolucion"
+              />
+            </div>
+            <div class="mt-3">
+              <label class="form-label" for="estadodevolucion">Estado devolución</label>
+              <select id="estadodevolucion" class="form-select" formControlName="estadodevolucion">
+                <option value="">Seleccione un estado</option>
+                <option
+                  *ngFor="let estado of estados"
+                  [value]="estado.nomestado"
+                >
+                  {{ estado.nomestado }}
+                </option>
+              </select>
+            </div>
+          </fieldset>
+        </div>
+        <div class="col-12 d-flex flex-column flex-sm-row justify-content-end gap-2">
+          <!-- Cancelar volvia siempre a "/" (Inicio). En edicion lo logico es
+               volver a la lista de prestamos. -->
+          <a class="btn btn-light" [routerLink]="esEdicion ? '/prestamos-equipos-lista' : '/'">
+            Cancelar
+          </a>
+          <button type="submit" class="btn btn-primary">
+            {{ esEdicion ? "Actualizar" : "Guardar préstamo" }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #reporteModal>
+  <div class="modal-header">
+    <h5 class="modal-title">Reporte de préstamo de equipo</h5>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="cerrarReporte()"
+      aria-label="Cerrar"
+    ></button>
+  </div>
+  <div class="modal-body" *ngIf="reporteDatos">
+    <app-prestamo-equipo-reporte
+      [datos]="reporteDatos"
+    ></app-prestamo-equipo-reporte>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="imprimirReporte()">
+      Imprimir
+    </button>
+    <button type="button" class="btn btn-light" (click)="cerrarReporte()">
+      Cerrar
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,60 @@
+# Node modules
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos temporales
+*.tmp
+*.log
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Editores / IDEs
+.idea/
+.angular
+
+# VS Code / Cursor
+.vscode/
+.history/
+.ionide/
+*.code-workspace
+
+# Cursor / agentes de IA
+.cursor/
+.cursorrules
+.cursorignore
+.cursorindexingignore
+.agents/
+.claude/
+.clinerules
+.codex/
+.gemini/
+.windsurf/
+.continue/
+.aider*
+.anthropic/
+.augment/
+.tabnine/
+.codeium/
+.copilot/
+copilot-chat/
+.github/copilot-instructions.md
+.github/instructions/
+.github/prompts/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.specs/
+.specstory/
+.prompt/
+.ai/
+*.canvas.tsx
+**/*.canvas.tsx
+
+# Carpeta de compilado
+dist/

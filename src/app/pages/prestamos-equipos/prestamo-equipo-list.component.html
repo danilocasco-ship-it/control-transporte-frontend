@@ -1,0 +1,74 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3 app-page-head"><h3 class="mb-0">Lista de préstamos de equipos</h3><a class="btn btn-success" routerLink="/prestamos-equipos">Nuevo préstamo</a></div>
+
+  <div *ngIf="mensajeError" class="alert alert-danger">{{ mensajeError }}</div>
+  <div *ngIf="loading" class="text-center py-4">Cargando préstamos...</div>
+
+  <div *ngIf="!loading" class="card">
+    <div class="card-body border-bottom">
+      <div class="row g-2 align-items-end">
+        <div class="col-md-7">
+          <label for="filtroTexto" class="form-label mb-1">Buscar</label>
+          <input id="filtroTexto" type="search" inputmode="search" autocomplete="off" class="form-control" placeholder="Sucursal, contratista, equipo, estado, observaciones..." [(ngModel)]="filtroTexto" (ngModelChange)="onFiltroTextoCambio()">
+        </div>
+        <div class="col-md-3">
+          <label for="filtroEstado" class="form-label mb-1">Estado</label>
+          <select id="filtroEstado" class="form-select" [(ngModel)]="filtroEstado" (ngModelChange)="onFiltroEstadoCambio()">
+            <option value="">Todos</option>
+            <option *ngFor="let estado of estadosDisponibles" [value]="estado">{{ estado }}</option>
+          </select>
+        </div>
+        <div class="col-md-2 d-flex justify-content-md-end">
+          <span class="text-muted small">Mostrando {{ startItem }} a {{ endItem }} de {{ totalItems }} registros</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Movil: una tarjeta por registro, sin desplazamiento horizontal -->
+    <div class="d-md-none">
+      <div class="app-mobile-card" *ngFor="let prestamo of paginatedPrestamos">
+        <div class="app-mobile-card__head">
+          <span class="app-mobile-card__code">{{ prestamo.fechaprestamo | date:'dd/MM/yyyy' }}</span>
+          <span class="badge text-bg-warning">{{ prestamo.estadoprestamo || '-' }}</span>
+        </div>
+        <div class="app-mobile-card__title">{{ prestamo.codequipo }}</div>
+        <dl class="app-mobile-card__data">
+          <div><dt>Sucursal</dt><dd>{{ prestamo.codsucursal }}</dd></div>
+          <div><dt>Contratista</dt><dd>{{ prestamo.codcontratista }}</dd></div>
+          <div><dt>Devolución</dt><dd>{{ prestamo.fechadevolucion ? (prestamo.fechadevolucion | date:'dd/MM/yyyy') : 'Pendiente' }}</dd></div>
+        </dl>
+        <div class="app-mobile-card__actions">
+          <button class="btn btn-sm btn-outline-primary" (click)="editar(prestamo)">Editar</button>
+          <button class="btn btn-sm btn-outline-danger" (click)="eliminar(prestamo)">Eliminar</button>
+        </div>
+      </div>
+      <div *ngIf="paginatedPrestamos.length === 0" class="text-center text-muted py-4">No hay préstamos que coincidan con la búsqueda.</div>
+    </div>
+
+    <!-- Escritorio y tablet: tabla completa -->
+    <div class="table-responsive d-none d-md-block">
+      <table class="table table-hover mb-0">
+        <thead><tr><th>Fecha préstamo</th><th>Sucursal</th><th>Contratista</th><th>Equipo</th><th>Estado</th><th>Devolución</th><th></th></tr></thead>
+        <tbody>
+          <tr *ngFor="let prestamo of paginatedPrestamos">
+            <td>{{ prestamo.fechaprestamo | date:'dd/MM/yyyy' }}</td>
+            <td>{{ prestamo.codsucursal }}</td>
+            <td>{{ prestamo.codcontratista }}</td>
+            <td>{{ prestamo.codequipo }}</td>
+            <td><span class="badge text-bg-warning">{{ prestamo.estadoprestamo || '-' }}</span></td>
+            <td>{{ prestamo.fechadevolucion ? (prestamo.fechadevolucion | date:'dd/MM/yyyy') : 'Pendiente' }}</td>
+            <td class="text-nowrap"><button class="btn btn-sm btn-outline-primary me-2" (click)="editar(prestamo)">Editar</button><button class="btn btn-sm btn-outline-danger" (click)="eliminar(prestamo)">Eliminar</button></td>
+          </tr>
+          <tr *ngIf="paginatedPrestamos.length === 0"><td colspan="7" class="text-center text-muted py-4">No hay préstamos que coincidan con la búsqueda.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-body border-top" *ngIf="totalItems > 0">
+      <div class="row justify-content-between align-items-center g-2">
+        <div class="col-sm-12 col-md-5">
+          <ngb-pagination [collectionSize]="totalItems" [(page)]="currentPage" [pageSize]="pageSize" [maxSize]="3" [rotate]="true" [boundaryLinks]="false"></ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

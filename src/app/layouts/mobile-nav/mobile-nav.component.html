@@ -1,0 +1,12 @@
+<nav class="app-bottom-nav" aria-label="Navegación principal">
+  <a
+    *ngFor="let item of items"
+    class="app-bottom-nav__item"
+    [routerLink]="item.link"
+    routerLinkActive="app-bottom-nav__item--active"
+    [routerLinkActiveOptions]="{ exact: item.exact === true }"
+  >
+    <i [class]="item.icon" aria-hidden="true"></i>
+    <span class="app-bottom-nav__label">{{ item.label }}</span>
+  </a>
+</nav>

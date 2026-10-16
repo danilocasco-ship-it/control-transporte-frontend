@@ -1,0 +1,27 @@
+/* token-expirado.component.scss */
+.auth-page-wrapper {
+  background-color: #f8f9fa;
+
+  .auth-page-content {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .text-warning {
+      color: #ffc107 !important;
+    }
+
+    .btn-warning {
+      background-color: #ffc107;
+      border-color: #ffc107;
+      padding: 0.5rem 1.5rem;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: #e0a800;
+        border-color: #e0a800;
+        transform: translateY(-2px);
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+<!--    DANILO 16/09/2026 -->
+<!--
+  Rediseno movil: el formulario usaba estilos en linea sobre un bloque gris, al
+  margen del resto de la aplicacion. Se paso a la misma tarjeta Bootstrap que
+  usan equipo-form y prestamo-equipo-form, con etiquetas asociadas a su campo
+  (for/id), teclados adecuados en movil (tel / numeric) y boton principal a
+  ancho completo en pantallas pequenas.
+-->
+
+<div class="container py-4" style="max-width: 600px">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="card-title mb-4">
+        {{ esEdicion ? 'Editar proveedor' : 'Registro de nuevo proveedor' }}
+      </h3>
+
+      <div *ngIf="mensaje" class="alert"
+        [class.alert-success]="mensaje.includes('✅')"
+        [class.alert-danger]="!mensaje.includes('✅')">{{ mensaje }}</div>
+
+      <form [formGroup]="proveedorForm" (ngSubmit)="guardar()" class="row g-3">
+        <div class="col-12">
+          <label class="form-label" for="nomproveedor">Nombre del proveedor *</label>
+          <input id="nomproveedor" type="text" class="form-control" formControlName="nomproveedor"
+            placeholder="Ej. Juan" autocomplete="given-name">
+        </div>
+
+        <div class="col-12">
+          <label class="form-label" for="apellidoproveedor">Apellido</label>
+          <input id="apellidoproveedor" type="text" class="form-control" formControlName="apellidoproveedor"
+            placeholder="Ej. Pérez" autocomplete="family-name">
+        </div>
+
+        <div class="col-12 col-sm-6">
+          <label class="form-label" for="duiproveedor">DUI</label>
+          <input id="duiproveedor" type="text" class="form-control" formControlName="duiproveedor"
+            placeholder="00000000-0" inputmode="numeric" autocomplete="off">
+        </div>
+
+        <div class="col-12 col-sm-6">
+          <label class="form-label" for="nitproveedor">NIT</label>
+          <input id="nitproveedor" type="text" class="form-control" formControlName="nitproveedor"
+            placeholder="0000-000000-000-0" inputmode="numeric" autocomplete="off">
+        </div>
+
+        <div class="col-12 col-sm-6">
+          <label class="form-label" for="telefonoproveedor">Teléfono</label>
+          <input id="telefonoproveedor" type="tel" class="form-control" formControlName="telefonoproveedor"
+            placeholder="0000-0000" inputmode="tel" autocomplete="tel">
+        </div>
+
+        <div class="col-12">
+          <label class="form-label" for="direccionproveedor">Dirección</label>
+          <textarea id="direccionproveedor" class="form-control" rows="3" formControlName="direccionproveedor"
+            placeholder="Dirección completa" autocomplete="street-address"></textarea>
+        </div>
+
+        <div class="col-12 d-flex flex-column flex-sm-row justify-content-end gap-2">
+          <a class="btn btn-light" routerLink="/proveedores-lista">Cancelar</a>
+          <button type="submit" class="btn btn-primary" [disabled]="proveedorForm.invalid">
+            {{ esEdicion ? 'Actualizar proveedor' : 'Guardar proveedor' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

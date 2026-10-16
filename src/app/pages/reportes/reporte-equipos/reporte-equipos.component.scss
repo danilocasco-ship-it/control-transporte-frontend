@@ -1,0 +1,54 @@
+.app-reporte {
+  background: #fff;
+  color: #000;
+  font: 12px Arial, sans-serif;
+  padding: 16px;
+}
+
+.app-reporte-header {
+  text-align: center;
+  border-bottom: 3px double #000;
+  padding-bottom: 8px;
+
+  h2 {
+    margin: 0 0 4px;
+    font-size: 18px;
+    text-transform: uppercase;
+  }
+
+  p {
+    margin: 0;
+    font-size: 12px;
+  }
+}
+
+.app-reporte-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.app-reporte-tabla {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    border: 1px solid #333;
+    padding: 4px 6px;
+    font-size: 12px;
+  }
+
+  th {
+    background: #e6e9ee;
+    text-align: center;
+  }
+}
+
+.app-reporte-footer {
+  margin-top: 10px;
+  text-align: right;
+  font-size: 11px;
+}

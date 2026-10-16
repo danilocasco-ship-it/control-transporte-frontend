@@ -1,0 +1,161 @@
+.orden-trabajo {
+  width: 100%;
+  max-width: 816px;
+  min-height: 1056px;
+  margin: auto;
+  padding: 14px 12px;
+  background: #fff;
+  color: #000;
+  font:
+    12px Arial,
+    sans-serif;
+}
+
+// En movil la hoja tamano carta no aporta nada: obligaba a media pantalla de
+// scroll en blanco dentro del modal. El ancho ya es 100%, solo se suelta la
+// altura minima. La impresion real se genera en otra ventana con sus propias
+// reglas, por lo que no le afecta.
+@media (max-width: 767.98px) {
+  .orden-trabajo {
+    min-height: 0;
+    padding: 10px 8px;
+  }
+}
+.encabezado {
+  display: block;
+  text-align: center;
+}
+.encabezado h2 {
+  text-align: center;
+}
+.logo {
+  color: #00a94f;
+  font-size: 18px;
+  padding-left: 5px;
+}
+h1,
+h2,
+p {
+  margin: 0;
+}
+h1 {
+  background: #00ae4d;
+  color: #fff;
+  font-size: 32px;
+  font-weight: normal;
+  padding: 7px 15px;
+  text-align: center;
+}
+.empresa-fecha {
+  display: flex;
+  justify-content: space-between;
+  margin: 23px 4px 0;
+  line-height: 18px;
+}
+.empresa strong {
+  display: inline-block;
+  width: 68px;
+}
+.documento {
+  text-align: right;
+}
+.documento span,
+.asignacion span {
+  display: inline-block;
+  min-width: 115px;
+  border-bottom: 1px solid #000;
+  padding: 0 5px;
+  text-align: center;
+}
+.asignacion {
+  width: 56%;
+  margin: 10px 0 20px auto;
+  text-align: right;
+  line-height: 18px;
+}
+.asignacion strong {
+  display: inline-block;
+  width: 62px;
+}
+.asignacion span {
+  width: 72%;
+  border: 1px solid #000;
+  text-align: left;
+}
+.datos-principales {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 100px;
+  min-height: 118px;
+}
+.bloque h2,
+.observaciones h2 {
+  background: #00ae4d;
+  color: #fff;
+  font-size: 12px;
+  padding: 3px 12px;
+}
+.bloque p {
+  padding: 4px 12px;
+  line-height: 17px;
+}
+.detalle {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 5px;
+}
+.detalle th,
+.detalle td {
+  border: 1px solid #333;
+  height: 18px;
+  padding: 3px 8px;
+}
+.detalle th {
+  background: #00ae4d;
+  color: #fff;
+  text-align: center;
+}
+.detalle th:first-child {
+  width: 11%;
+}
+.detalle th:nth-child(2) {
+  width: 49%;
+}
+.detalle th:nth-child(3) {
+  width: 14%;
+}
+.detalle th:nth-child(4),
+.detalle th:nth-child(5) {
+  width: 13%;
+}
+.observaciones {
+  border: 1px solid #333;
+  border-top: 0;
+  min-height: 90px;
+}
+.observaciones p {
+  padding: 5px 14px;
+}
+.firmas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 28px;
+  text-align: center;
+  line-height: 34px;
+}
+.firmas span {
+  display: inline-block;
+  width: 68%;
+  border-bottom: 1px solid #000;
+}
+.firmas small {
+  display: block;
+}
+@media print {
+  .orden-trabajo {
+    max-width: none;
+    min-height: auto;
+    padding: 0;
+  }
+}

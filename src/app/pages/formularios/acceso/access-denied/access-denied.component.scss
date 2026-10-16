@@ -1,0 +1,25 @@
+/* error-permiso.component.scss */
+.auth-page-wrapper {
+  background-color: #f8f9fa;
+
+  .auth-page-content {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .text-danger {
+      color: #dc3545 !important;
+    }
+
+    .btn-primary {
+      background-color: #405189;
+      border-color: #405189;
+      padding: 0.5rem 1.5rem;
+      font-size: 1.1rem;
+
+      &:hover {
+        background-color: #364574;
+        border-color: #364574;
+      }
+    }
+  }
+}

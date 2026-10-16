@@ -1,0 +1,57 @@
+<article class="orden-trabajo" *ngIf="datos">
+  <header class="encabezado">
+    <h2>PRÉSTAMO DE EQUIPO</h2>
+  </header>
+  <section class="empresa-fecha">
+    <div class="empresa">
+      <p> GLOBAL DEVELOPER S.A. DE C.V.</p>
+      <p>
+    </div>
+    <div class="documento">
+      <p><strong>N° Documento:</strong><span>{{ datos.numerodoc }}</span></p>
+      <p><strong>Fecha Registro:</strong> <span>{{ datos.fechaRegistro }}</span></p>
+    </div>
+  </section>
+  <section class="asignacion">
+    <p><strong>Asigando:</strong><span>{{ datos.contratista }}</span></p>
+    <p><strong>Sucursal:</strong> <span>{{ datos.sucursal }}</span></p>
+  </section>
+
+  <table class="detalle">
+    <thead>
+      <tr>
+        <th>Cant</th>
+        <th>Descripción</th>
+        <th>Marca</th>
+        <th>Código</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>{{ datos.equipo.descripcion }}</td>
+        <td>{{ datos.marca }}</td>
+        <td>{{ datos.equipo.codigo }}</td>
+        <td>PRESTADO</td>
+      </tr>
+      <tr *ngFor="let fila of [1,2,3,4,5,6,7,8]">
+        <td>&nbsp;</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <footer class="firmas">
+    <div>
+      <p>Firma:<span></span></p><small>Entregado por: {{ datos.usuario }}</small>
+    </div>
+    <div>
+      <p>Firma:<span></span></p><small>Recibido por: {{ datos.contratista }}</small>
+    </div>
+  </footer>
+
+</article>
